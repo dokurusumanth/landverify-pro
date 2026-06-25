@@ -609,11 +609,17 @@ function Inquiry() {
                 {form.propertyDetails.length}/1000
               </p>
             </div>
+            {serverError && (
+              <p className="mt-4 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {serverError}
+              </p>
+            )}
             <button
               type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-navy px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-navy-deep sm:w-auto"
+              disabled={saving}
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-navy px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-navy-deep disabled:opacity-60 sm:w-auto"
             >
-              Send Secure Inquiry <ArrowRight className="h-4 w-4" />
+              {saving ? "Sending…" : "Send Secure Inquiry"} <ArrowRight className="h-4 w-4" />
             </button>
             <p className="mt-3 text-xs text-muted-foreground">
               By submitting, you agree to be contacted about your inquiry. We never share your data.
@@ -716,6 +722,9 @@ function Footer() {
               </a>
             </li>
             <li>NRILandCheck.in</li>
+            <li>
+              <a href="/auth" className="text-white/50 hover:text-saffron">Team sign in</a>
+            </li>
           </ul>
         </div>
         <div>
