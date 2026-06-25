@@ -14,6 +14,7 @@ import {
   Lock,
 } from "lucide-react";
 import heroImage from "@/assets/hero-land.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
