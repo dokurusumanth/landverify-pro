@@ -427,12 +427,15 @@ function Inquiry() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setServerError(null);
     const parsed = inquirySchema.safeParse(form);
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof FormState, string>> = {};
@@ -444,8 +447,22 @@ function Inquiry() {
       return;
     }
     setErrors({});
-    // Hand off securely to WhatsApp — no server storage of sensitive data on this static page.
     const d = parsed.data;
+    setSaving(true);
+    const { error } = await supabase.from("inquiries").insert({
+      full_name: d.fullName,
+      email: d.email,
+      phone: d.phone,
+      country: d.country,
+      property_state: d.propertyState,
+      property_details: d.propertyDetails,
+      service: d.service,
+    });
+    setSaving(false);
+    if (error) {
+      setServerError("We couldn't save your inquiry. Please try WhatsApp instead.");
+      return;
+    }
     const msg = [
       `New verification inquiry`,
       `Name: ${d.fullName}`,
@@ -457,6 +474,7 @@ function Inquiry() {
       `Details: ${d.propertyDetails}`,
     ].join("\n");
     setSubmitted(true);
+    setForm(initialForm);
     window.open(waLink(msg), "_blank", "noopener,noreferrer");
   };
 
