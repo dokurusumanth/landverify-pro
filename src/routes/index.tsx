@@ -14,6 +14,7 @@ import {
   Lock,
 } from "lucide-react";
 import heroImage from "@/assets/hero-land.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -427,12 +428,15 @@ function Inquiry() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setServerError(null);
     const parsed = inquirySchema.safeParse(form);
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof FormState, string>> = {};
@@ -444,8 +448,22 @@ function Inquiry() {
       return;
     }
     setErrors({});
-    // Hand off securely to WhatsApp — no server storage of sensitive data on this static page.
     const d = parsed.data;
+    setSaving(true);
+    const { error } = await supabase.from("inquiries").insert({
+      full_name: d.fullName,
+      email: d.email,
+      phone: d.phone,
+      country: d.country,
+      property_state: d.propertyState,
+      property_details: d.propertyDetails,
+      service: d.service,
+    });
+    setSaving(false);
+    if (error) {
+      setServerError("We couldn't save your inquiry. Please try WhatsApp instead.");
+      return;
+    }
     const msg = [
       `New verification inquiry`,
       `Name: ${d.fullName}`,
@@ -457,6 +475,7 @@ function Inquiry() {
       `Details: ${d.propertyDetails}`,
     ].join("\n");
     setSubmitted(true);
+    setForm(initialForm);
     window.open(waLink(msg), "_blank", "noopener,noreferrer");
   };
 
@@ -590,11 +609,17 @@ function Inquiry() {
                 {form.propertyDetails.length}/1000
               </p>
             </div>
+            {serverError && (
+              <p className="mt-4 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {serverError}
+              </p>
+            )}
             <button
               type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-navy px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-navy-deep sm:w-auto"
+              disabled={saving}
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-navy px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-navy-deep disabled:opacity-60 sm:w-auto"
             >
-              Send Secure Inquiry <ArrowRight className="h-4 w-4" />
+              {saving ? "Sending…" : "Send Secure Inquiry"} <ArrowRight className="h-4 w-4" />
             </button>
             <p className="mt-3 text-xs text-muted-foreground">
               By submitting, you agree to be contacted about your inquiry. We never share your data.
@@ -697,6 +722,9 @@ function Footer() {
               </a>
             </li>
             <li>NRILandCheck.in</li>
+            <li>
+              <a href="/auth" className="text-white/50 hover:text-saffron">Team sign in</a>
+            </li>
           </ul>
         </div>
         <div>
