@@ -172,18 +172,28 @@ function Nav() {
 
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10">
+    <section
+      id="top"
+      className="relative isolate overflow-hidden bg-navy-deep"
+      style={{
+        backgroundImage:
+          "linear-gradient(120deg, oklch(0.18 0.06 260) 0%, oklch(0.24 0.08 260) 55%, oklch(0.30 0.09 250) 100%)",
+      }}
+    >
+      <div className="pointer-events-none absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="Surveyor verifying a marked land plot at sunrise in rural India"
+          alt=""
+          aria-hidden="true"
           width={1600}
           height={1104}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover opacity-25 mix-blend-luminosity"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,oklch(0.18_0.06_260/0.92)_0%,oklch(0.22_0.08_260/0.78)_45%,oklch(0.18_0.06_260/0.35)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,oklch(0.18_0.06_260/0.85)_0%,oklch(0.22_0.08_260/0.7)_55%,oklch(0.18_0.06_260/0.55)_100%)]" />
       </div>
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:py-28">
+      <div className="absolute -left-24 -top-24 z-0 h-72 w-72 rounded-full bg-emerald/25 blur-3xl" />
+      <div className="absolute -bottom-32 right-0 z-0 h-80 w-80 rounded-full bg-saffron/20 blur-3xl" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:py-28">
         <div className="lg:col-span-7">
           <span className="inline-flex items-center gap-2 rounded-full border border-saffron/40 bg-saffron/10 px-3 py-1 text-xs font-medium text-saffron-soft">
             <span className="h-1.5 w-1.5 rounded-full bg-saffron" />
