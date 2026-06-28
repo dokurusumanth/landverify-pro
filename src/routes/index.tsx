@@ -14,6 +14,7 @@ import {
   Lock,
 } from "lucide-react";
 import heroImage from "@/assets/hero-land.jpg";
+import logoAsset from "@/assets/nrilandcheck-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
@@ -97,10 +98,12 @@ function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-navy text-primary-foreground">
-            <ShieldCheck className="h-5 w-5" />
-          </span>
+        <a href="#top" className="flex items-center gap-2.5">
+          <img
+            src={logoAsset.url}
+            alt="NRILandCheck — Land Mapping, Verification, Solutions"
+            className="h-10 w-10 object-contain"
+          />
           <span className="font-display text-lg font-semibold tracking-tight text-navy">
             NRI<span className="text-emerald">Land</span>Check
           </span>
@@ -698,9 +701,9 @@ function Footer() {
     <footer className="border-t border-border bg-navy text-white/80">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-white/10">
-              <ShieldCheck className="h-5 w-5 text-saffron" />
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-10 w-10 place-items-center rounded-md bg-white p-1">
+              <img src={logoAsset.url} alt="NRILandCheck logo" className="h-full w-full object-contain" />
             </span>
             <span className="font-display text-lg font-semibold text-white">
               NRI<span className="text-saffron">Land</span>Check
