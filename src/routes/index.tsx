@@ -12,7 +12,11 @@ import {
   CheckCircle2,
   ArrowRight,
   Lock,
+  HardHat,
+  Compass,
+  Hammer,
 } from "lucide-react";
+
 import heroImage from "@/assets/hero-land.jpg";
 import logoAsset from "@/assets/nrilandcheck-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
