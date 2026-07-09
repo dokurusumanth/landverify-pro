@@ -66,6 +66,8 @@ function Landing() {
       <Hero />
       <TrustBar />
       <Services />
+      <BuildPartners />
+
       <HowItWorks />
       <Inquiry />
       <Footer />
