@@ -12,7 +12,11 @@ import {
   CheckCircle2,
   ArrowRight,
   Lock,
+  HardHat,
+  Compass,
+  Hammer,
 } from "lucide-react";
+
 import heroImage from "@/assets/hero-land.jpg";
 import logoAsset from "@/assets/nrilandcheck-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
@@ -62,6 +66,8 @@ function Landing() {
       <Hero />
       <TrustBar />
       <Services />
+      <BuildPartners />
+
       <HowItWorks />
       <Inquiry />
       <Footer />
@@ -372,6 +378,72 @@ function Services() {
     </section>
   );
 }
+
+const BUILD_PARTNERS = [
+  {
+    icon: Compass,
+    title: "Licensed architects",
+    body: "Vetted architects who understand local bylaws, Vastu preferences, and NRI-friendly remote approvals.",
+  },
+  {
+    icon: HardHat,
+    title: "Trusted contractors",
+    body: "Background-checked construction teams with transparent quotes, milestone billing, and on-site supervision.",
+  },
+  {
+    icon: Hammer,
+    title: "End-to-end project management",
+    body: "From soil testing and permits to handover — we coordinate everything and share weekly photo & video updates.",
+  },
+];
+
+function BuildPartners() {
+  return (
+    <section id="build" className="border-t border-border/60 bg-emerald-soft/40">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald">
+              Build on your land
+            </p>
+            <h2 className="mt-3 font-display text-3xl text-navy sm:text-4xl lg:text-5xl">
+              Ready to build? We connect you with trusted architects & construction teams.
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Once your land is verified, we help you take the next step — planning a home, villa,
+              farmhouse, or commercial project. We introduce you to pre-vetted local architects and
+              construction partners, and stay involved as your on-ground representative.
+            </p>
+            <a
+              href={waLink("Hi NRI Land Check, I'd like help connecting with architects and construction teams for my property in India.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-navy-deep"
+            >
+              <MessageCircle className="h-4 w-4" /> Discuss your project
+            </a>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {BUILD_PARTNERS.map((p) => (
+              <article
+                key={p.title}
+                className="rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-emerald/40 hover:shadow-[0_20px_60px_-30px_oklch(0.18_0.06_260/0.35)] sm:[&:nth-child(3)]:col-span-2"
+              >
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald text-primary-foreground">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-display text-lg text-navy">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 
 const STEPS = [
   {
