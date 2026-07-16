@@ -41,8 +41,8 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const WHATSAPP_NUMBER = "919398666864";
-const PHONE_DISPLAY = "+91 93986 66864";
+const WHATSAPP_NUMBER = "917815813674";
+const PHONE_DISPLAY = "+91 78158 13674";
 const waLink = (msg: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 
