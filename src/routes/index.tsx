@@ -15,6 +15,7 @@ import {
   HardHat,
   Compass,
   Hammer,
+  X,
 } from "lucide-react";
 
 import heroImage from "@/assets/hero-land.jpg";
@@ -40,8 +41,8 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const WHATSAPP_NUMBER = "919398666864";
-const PHONE_DISPLAY = "+91 93986 66864";
+const WHATSAPP_NUMBER = "917815813674";
+const PHONE_DISPLAY = "+91 78158 13674";
 const waLink = (msg: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 
@@ -94,6 +95,25 @@ function FloatingWhatsApp() {
   );
 }
 
+function PromoBar() {
+  const [show, setShow] = useState(true);
+  if (!show) return null;
+  return (
+    <div className="relative bg-saffron px-4 py-2 pr-10 text-center text-sm font-semibold text-navy">
+      <span className="mx-auto inline-flex max-w-3xl items-center gap-2">
+        Introductory Packages starting ₹2999 in and around Hyderabad
+      </span>
+      <button
+        onClick={() => setShow(false)}
+        aria-label="Close offer banner"
+        className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-navy transition hover:bg-navy/10"
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
 function Nav() {
   const [open, setOpen] = useState(false);
   const links = [
@@ -102,8 +122,10 @@ function Nav() {
     { href: "#contact", label: "Contact" },
   ];
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+    <div className="sticky top-0 z-50">
+      <PromoBar />
+      <header className="border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <a href="#top" className="flex items-center gap-2.5">
           <img
             src={logoAsset.url}
@@ -175,7 +197,8 @@ function Nav() {
           </div>
         </div>
       )}
-    </header>
+      </header>
+    </div>
   );
 }
 
