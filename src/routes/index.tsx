@@ -15,6 +15,7 @@ import {
   HardHat,
   Compass,
   Hammer,
+  X,
 } from "lucide-react";
 
 import heroImage from "@/assets/hero-land.jpg";
