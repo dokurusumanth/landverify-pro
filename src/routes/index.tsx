@@ -96,6 +96,27 @@ function FloatingWhatsApp() {
   );
 }
 
+function PromoBanner() {
+  const [show, setShow] = useState(true);
+  if (!show) return null;
+  return (
+    <div className="fixed bottom-6 left-1/2 z-40 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2">
+      <div className="flex items-center gap-3 rounded-full border border-saffron/40 bg-saffron px-4 py-3 shadow-lg">
+        <span className="flex-1 text-center text-sm font-semibold text-navy">
+          Introductory Packages starting ₹2999 in and around Hyderabad
+        </span>
+        <button
+          onClick={() => setShow(false)}
+          aria-label="Close offer banner"
+          className="grid h-7 w-7 flex-none place-items-center rounded-full bg-navy text-white transition hover:bg-navy-deep"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Nav() {
   const [open, setOpen] = useState(false);
   const links = [
