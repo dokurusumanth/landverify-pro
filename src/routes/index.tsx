@@ -72,6 +72,7 @@ function Landing() {
       <HowItWorks />
       <Inquiry />
       <Footer />
+      <PromoBanner />
       <FloatingWhatsApp />
     </div>
   );
