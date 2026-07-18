@@ -18,9 +18,10 @@ import {
   X,
 } from "lucide-react";
 
+import { useServerFn } from "@tanstack/react-start";
 import heroImage from "@/assets/hero-land.jpg";
 import logoAsset from "@/assets/nrilandcheck-logo.png.asset.json";
-import { supabase } from "@/integrations/supabase/client";
+import { sendInquiryEmail } from "@/lib/send-inquiry.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -538,6 +539,7 @@ function Inquiry() {
   const [submitted, setSubmitted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const sendEmail = useServerFn(sendInquiryEmail);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
@@ -558,33 +560,17 @@ function Inquiry() {
     setErrors({});
     const d = parsed.data;
     setSaving(true);
-    const { error } = await supabase.from("inquiries").insert({
-      full_name: d.fullName,
-      email: d.email,
-      phone: d.phone,
-      country: d.country,
-      property_state: d.propertyState,
-      property_details: d.propertyDetails,
-      service: d.service,
-    });
-    setSaving(false);
-    if (error) {
-      setServerError("We couldn't save your inquiry. Please try WhatsApp instead.");
+    try {
+      await sendEmail({ data: d });
+    } catch (err) {
+      console.error(err);
+      setSaving(false);
+      setServerError("We couldn't send your inquiry. Please try WhatsApp instead.");
       return;
     }
-    const msg = [
-      `New verification inquiry`,
-      `Name: ${d.fullName}`,
-      `Email: ${d.email}`,
-      `Phone: ${d.phone}`,
-      `Country: ${d.country}`,
-      `Property state: ${d.propertyState}`,
-      `Service: ${d.service}`,
-      `Details: ${d.propertyDetails}`,
-    ].join("\n");
+    setSaving(false);
     setSubmitted(true);
     setForm(initialForm);
-    window.open(waLink(msg), "_blank", "noopener,noreferrer");
   };
 
   return (
