@@ -47,11 +47,27 @@ export const sendInquiryEmail = createServerFn({ method: "POST" })
       all: "All services",
     };
 
-    const subject = `New Land Verification Inquiry — ${data.fullName}`;
+    // Generate a short, unique inquiry ID (e.g. NLC-8F3A2K)
+    const genId = () => {
+      const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      const bytes = new Uint8Array(6);
+      crypto.getRandomValues(bytes);
+      let out = "";
+      for (const b of bytes) out += alphabet[b % alphabet.length];
+      return `NLC-${out}`;
+    };
+    const inquiryId = genId();
+
+    const fromAddress =
+      process.env.INQUIRY_FROM_EMAIL || "contact@nrilandcheck.in";
+    const fromHeader = `NRILandCheck.in <${fromAddress}>`;
+
+    const subject = `[${inquiryId}] New Land Verification Inquiry — ${data.fullName}`;
 
     const textBody = [
       `New verification inquiry from NRILandCheck.in`,
       ``,
+      `Inquiry ID: ${inquiryId}`,
       `Name: ${data.fullName}`,
       `Email: ${data.email}`,
       `Phone: ${data.phone}`,
@@ -65,9 +81,10 @@ export const sendInquiryEmail = createServerFn({ method: "POST" })
 
     const htmlBody = `
       <div style="font-family:Arial,sans-serif;color:#0f172a;line-height:1.6">
-        <h2 style="color:#0b2545;margin:0 0 12px">New Land Verification Inquiry</h2>
-        <p style="margin:0 0 16px;color:#475569">From the NRILandCheck.in website</p>
+        <h2 style="color:#0b2545;margin:0 0 4px">New Land Verification Inquiry</h2>
+        <p style="margin:0 0 16px;color:#475569">From the NRILandCheck.in website · Inquiry ID <strong>${inquiryId}</strong></p>
         <table style="border-collapse:collapse;font-size:14px">
+          <tr><td style="padding:4px 12px 4px 0;color:#64748b">Inquiry ID</td><td style="padding:4px 0"><strong>${inquiryId}</strong></td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#64748b">Name</td><td style="padding:4px 0"><strong>${escapeHtml(data.fullName)}</strong></td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#64748b">Email</td><td style="padding:4px 0"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#64748b">Phone</td><td style="padding:4px 0">${escapeHtml(data.phone)}</td></tr>
@@ -83,9 +100,11 @@ export const sendInquiryEmail = createServerFn({ method: "POST" })
     // Build a multipart/alternative MIME message so Gmail renders HTML with a text fallback
     const boundary = `nlc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
     const mime = [
+      `From: ${fromHeader}`,
       `To: ${recipient}`,
       `Reply-To: ${data.fullName} <${data.email}>`,
       `Subject: ${subject}`,
+      `X-Inquiry-Id: ${inquiryId}`,
       `MIME-Version: 1.0`,
       `Content-Type: multipart/alternative; boundary="${boundary}"`,
       ``,
@@ -126,5 +145,5 @@ export const sendInquiryEmail = createServerFn({ method: "POST" })
       throw new Error(`Email send failed [${res.status}]`);
     }
 
-    return { ok: true as const };
+    return { ok: true as const, inquiryId };
   });

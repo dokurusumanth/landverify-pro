@@ -537,6 +537,7 @@ function Inquiry() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [inquiryId, setInquiryId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const sendEmail = useServerFn(sendInquiryEmail);
@@ -561,7 +562,8 @@ function Inquiry() {
     const d = parsed.data;
     setSaving(true);
     try {
-      await sendEmail({ data: d });
+      const result = await sendEmail({ data: d });
+      setInquiryId(result?.inquiryId ?? null);
     } catch (err) {
       console.error(err);
       setSaving(false);
@@ -616,6 +618,11 @@ function Inquiry() {
                 <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald" />
                 <div>
                   Thanks — your inquiry has been sent to our team. We'll get back to you shortly.
+                  {inquiryId && (
+                    <div className="mt-1 text-xs text-navy/70">
+                      Reference ID: <span className="font-mono font-semibold">{inquiryId}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
