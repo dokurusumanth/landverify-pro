@@ -145,5 +145,5 @@ export const sendInquiryEmail = createServerFn({ method: "POST" })
       throw new Error(`Email send failed [${res.status}]`);
     }
 
-    return { ok: true as const };
+    return { ok: true as const, inquiryId };
   });
