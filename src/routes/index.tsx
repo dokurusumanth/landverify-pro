@@ -537,6 +537,7 @@ function Inquiry() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [inquiryId, setInquiryId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const sendEmail = useServerFn(sendInquiryEmail);
