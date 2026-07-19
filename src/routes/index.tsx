@@ -615,8 +615,7 @@ function Inquiry() {
               <div className="mb-6 flex items-start gap-3 rounded-lg border border-emerald/40 bg-emerald-soft p-4 text-sm text-navy">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald" />
                 <div>
-                  Thanks — we've opened WhatsApp with your details pre-filled. Just hit send and
-                  we'll reply shortly.
+                  Thanks — your inquiry has been sent to our team. We'll get back to you shortly.
                 </div>
               </div>
             )}
@@ -816,9 +815,6 @@ function Footer() {
               </a>
             </li>
             <li>NRILandCheck.in</li>
-            <li>
-              <a href="/auth" className="text-white/50 hover:text-saffron">Team sign in</a>
-            </li>
           </ul>
         </div>
         <div>
