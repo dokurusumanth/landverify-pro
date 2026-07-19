@@ -618,6 +618,11 @@ function Inquiry() {
                 <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald" />
                 <div>
                   Thanks — your inquiry has been sent to our team. We'll get back to you shortly.
+                  {inquiryId && (
+                    <div className="mt-1 text-xs text-navy/70">
+                      Reference ID: <span className="font-mono font-semibold">{inquiryId}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
