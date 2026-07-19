@@ -815,9 +815,6 @@ function Footer() {
               </a>
             </li>
             <li>NRILandCheck.in</li>
-            <li>
-              <a href="/auth" className="text-white/50 hover:text-saffron">Team sign in</a>
-            </li>
           </ul>
         </div>
         <div>
