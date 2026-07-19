@@ -562,7 +562,8 @@ function Inquiry() {
     const d = parsed.data;
     setSaving(true);
     try {
-      await sendEmail({ data: d });
+      const result = await sendEmail({ data: d });
+      setInquiryId(result?.inquiryId ?? null);
     } catch (err) {
       console.error(err);
       setSaving(false);
